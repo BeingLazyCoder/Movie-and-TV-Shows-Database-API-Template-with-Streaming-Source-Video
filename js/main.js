@@ -18,49 +18,54 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchAndDisplay('tv/top_rated', 'top-rated-tvshows-list', 'topRatedTVShow');
 });
 
-// Generic fetch and display function
+// Fetch and display Movies and TV Shows
 function fetchAndDisplay(endpoint, containerId, pageKey) {
     const url = `${API_URL}/${endpoint}?api_key=${API_KEY}&page=${currentPage[pageKey]}`;
     fetch(url)
         .then(response => response.json())
-        .then(data => displayItems(data.results, containerId))
-        .catch(error => console.error('Error fetching data:', error));
+        .then(data => displayItems(data.results, containerId, endpoint.startsWith('movie')))
+        .catch(error => console.error(`Error fetching ${endpoint}:`, error));
 }
 
-// Display Movies and TV Shows in the grid
-function displayItems(items, containerId) {
+// Display items in the grid (for both movies and TV shows)
+function displayItems(items, containerId, isMovie) {
     const container = document.getElementById(containerId);
-    const fragment = document.createDocumentFragment(); // Create a document fragment for performance
+    const fragment = document.createDocumentFragment();
 
     items.forEach(item => {
-        const card = document.createElement('div');
-        card.className = 'movie-item';
-        card.setAttribute('data-id', item.id);
-        card.setAttribute('data-type', item.media_type || 'movie');
-        
-        const img = document.createElement('img');
-        img.src = `${IMG_PATH}${item.poster_path}`;
-        img.alt = item.title || item.name;
-        
-        const title = document.createElement('h3');
-        title.textContent = item.title || item.name;
-
-        card.appendChild(img);
-        card.appendChild(title);
+        const card = createCard(item, isMovie);
         fragment.appendChild(card);
     });
 
     container.appendChild(fragment);
-    addClickEventToCards(); // Attach click event to each card
+    addClickEventToCards(containerId, isMovie); // Attach click event
 }
 
-// Add click event to navigate to detail pages
-function addClickEventToCards() {
-    document.querySelectorAll('.movie-item').forEach(item => {
+// Create a card element for movies or TV shows
+function createCard(item, isMovie) {
+    const card = document.createElement('div');
+    card.className = 'movie-item';
+    card.setAttribute('data-id', item.id);
+    card.setAttribute('data-type', isMovie ? 'movie' : 'tv');
+
+    const img = document.createElement('img');
+    img.src = `${IMG_PATH}${item.poster_path}`;
+    img.alt = isMovie ? item.title : item.name;
+
+    const title = document.createElement('h3');
+    title.textContent = isMovie ? item.title : item.name;
+
+    card.appendChild(img);
+    card.appendChild(title);
+    return card;
+}
+
+// Add click events to cards
+function addClickEventToCards(containerId, isMovie) {
+    document.querySelectorAll(`#${containerId} .movie-item`).forEach(item => {
         item.addEventListener('click', () => {
             const id = item.getAttribute('data-id');
-            const type = item.getAttribute('data-type');
-            const url = type === 'movie' ? `movie_detail.html?id=${id}` : `tvshow_detail.html?id=${id}`;
+            const url = isMovie ? `movie_detail.html?id=${id}` : `tvshow_detail.html?id=${id}`;
             window.location.href = url;
         });
     });
@@ -91,61 +96,30 @@ function displaySearchResults(results) {
     if (results.length > 0) {
         const fragment = document.createDocumentFragment();
         results.forEach(result => {
-            const card = document.createElement('div');
-            card.className = 'movie-item';
-            card.setAttribute('data-id', result.id);
-            card.setAttribute('data-type', result.media_type);
-            
-            const img = document.createElement('img');
-            img.src = `${IMG_PATH}${result.poster_path}`;
-            img.alt = result.title || result.name;
-
-            const title = document.createElement('h3');
-            title.textContent = result.title || result.name;
-
-            card.appendChild(img);
-            card.appendChild(title);
+            const card = createCard(result, result.media_type === 'movie');
             fragment.appendChild(card);
         });
 
         searchResultsContainer.appendChild(fragment);
         document.getElementById('search-results').style.display = 'block';
-        addClickEventToCards(); // Add click events to the new search results
+        addClickEventToCards('search-results-list', true); // Handle events for search results
     } else {
         document.getElementById('search-results').style.display = 'none';
     }
 }
 
 // Load More Button functionality
-document.getElementById('load-more-movies').addEventListener('click', () => {
-    currentPage.popularMovie++;
-    fetchAndDisplay('movie/popular', 'popular-movies-list', 'popularMovie');
-});
+const loadMoreButtons = {
+    'load-more-movies': 'movie/popular',
+    'load-more-top-rated-movies': 'movie/top_rated',
+    'load-more-tvshows': 'tv/popular',
+    'load-more-top-rated-tvshows': 'tv/top_rated'
+};
 
-document.getElementById('load-more-top-rated-movies').addEventListener('click', () => {
-    currentPage.topRatedMovie++;
-    fetchAndDisplay('movie/top_rated', 'top-rated-movies-list', 'topRatedMovie');
-});
-
-document.getElementById('load-more-tvshows').addEventListener('click', () => {
-    currentPage.popularTVShow++;
-    fetchAndDisplay('tv/popular', 'popular-tvshows-list', 'popularTVShow');
-});
-
-document.getElementById('load-more-top-rated-tvshows').addEventListener('click', () => {
-    currentPage.topRatedTVShow++;
-    fetchAndDisplay('tv/top_rated', 'top-rated-tvshows-list', 'topRatedTVShow');
-});
-fetch(url)
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Process your data here
-    })
-    .catch(error => {
-        console.error('There has been a problem with your fetch operation:', error);
+Object.keys(loadMoreButtons).forEach(buttonId => {
+    document.getElementById(buttonId).addEventListener('click', () => {
+        const type = buttonId.includes('movies') ? 'movie' : 'tv';
+        currentPage[`${type}Movie`] = (type === 'movie' ? currentPage.popularMovie : currentPage.popularTVShow) + 1;
+        fetchAndDisplay(loadMoreButtons[buttonId], buttonId.replace('load-more-', ''), `${type}Movie`);
     });
+});
