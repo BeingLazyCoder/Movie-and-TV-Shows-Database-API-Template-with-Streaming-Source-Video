@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JioStream - Stream Movies & TV Shows in 4K</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <a class="logo" href="index.html">JioStream</a>
+        <nav>
+            <a href="index.html" class="nav-button">Home</a>
+            <a href="movie.html" class="nav-button">Movies</a>
+            <a href="tvshow.html" class="nav-button">TV Shows</a>
+        </nav>
+    </header>
+
+    <!-- Search Section -->
+    <div class="background">
+        <div class="search-container">
+            <input type="text" id="search-bar" placeholder="Search for movies or TV shows..." aria-label="Search" />
+            <div id="search-results" class="search-results">
+                <div id="search-results-list" class="movie-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <section>
+            <h1>Popular Movies</h1>
+            <div id="popular-movies-list" class="movie-grid"></div>
+            <button id="load-more-movies" class="btn">Load More Popular Movies</button>
+        </section>
+
+        <section>
+            <h1>Top Rated Movies</h1>
+            <div id="top-rated-movies-list" class="movie-grid"></div>
+            <button id="load-more-top-rated-movies" class="btn">Load More Top Rated Movies</button>
+        </section>
+
+        <section>
+            <h1>Popular TV Shows</h1>
+            <div id="popular-tvshows-list" class="movie-grid"></div>
+            <button id="load-more-tvshows" class="btn">Load More Popular TV Shows</button>
+        </section>
+
+        <section>
+            <h1>Top Rated TV Shows</h1>
+            <div id="top-rated-tvshows-list" class="movie-grid"></div>
+            <button id="load-more-top-rated-tvshows" class="btn">Load More Top Rated TV Shows</button>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; JioStream 2024. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
+</body>
+</html>

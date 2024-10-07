@@ -1,0 +1,180 @@
+body {
+    background: linear-gradient(to right, #434343, #000000); /* Combined background properties */
+    min-height: 100vh;
+    margin: 0 15px; /* Simplified margin */
+    font-family: 'Georgia', sans-serif;
+    color: white;
+    text-align: center;
+}
+
+/* Header Styles */
+.header {
+    border-radius: 20px;
+    margin: 10px;
+    text-align: center;
+    padding: 20px;
+    background: linear-gradient(to right, #434343, #000000);
+    box-shadow: 0px 8px 15px rgba(238, 232, 232, 0.5);
+}
+
+.logo {
+    color: #fff;
+    font-size: 3rem;
+    font-weight: 1000;
+    font-family: Georgia;
+    align-items: center;
+}
+
+.header nav {
+    text-align: center;
+    margin: 40px 0; /* Adjusted margin */
+}
+
+.header nav .nav-button {
+    margin: 10px;
+    padding: 10px 15px;
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.header nav .nav-button:hover {
+    background-color: #555;
+}
+
+/* Background Styling */
+.background {
+    padding: 20px;
+}
+
+/* Search Input Styling */
+.search-container {
+    background-color: transparent;
+    margin: 30px 0;
+    text-align: center;
+}
+
+.search-container input {
+    background-color: transparent;
+    padding: 10px;
+    width: 90%; /* Full width on smaller devices */
+    max-width: 600px; /* Max width for larger devices */
+    height: 60px;
+    border-radius: 100px;
+    font-size: 16px;
+}
+
+/* Movie Grid Styling */
+.movie-grid {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 20px; /* Reduced gap for smaller screens */
+}
+
+.movie-item {
+    text-align: center;
+    padding: 10px;
+}
+
+.movie-item img {
+    box-shadow: 0px 8px 15px rgba(238, 232, 232, 0.5);
+    width: 100%;
+    border-radius: 15px;
+}
+
+.movie-item h3 {
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Button Styling */
+.btn {
+    font: 1em Georgia;
+    font-weight: 500;
+    font-style: italic;
+    display: block;
+    align-items: center;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background: rgb(223, 91, 149);
+    background: radial-gradient(circle, rgba(223, 91, 149, 1) 11%, rgba(95, 184, 185, 1) 100%);
+    border-radius: 10px;
+}
+
+/* Detail Page Styling */
+.detail-page {
+    text-align: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.movie-details img {
+    box-shadow: 0px 8px 15px rgba(238, 232, 232, 0.5);
+    width: 200px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.movie-details div {
+    color: #fff;
+    max-width: 100%;
+}
+
+.video-card {
+    background-color: #222;
+    padding: 5px;
+    margin: 10px 0; /* Reduced margin for smaller screens */
+    border-radius: 20px;
+    box-shadow: 0px 8px 15px #fff;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 20px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .logo {
+        font-size: 2.5rem; /* Smaller logo size for tablets */
+    }
+
+    .movie-item {
+        max-width: 100%; /* Allow full width on smaller screens */
+    }
+
+    .movie-details img {
+        width: 150px; /* Smaller images for mobile */
+    }
+}
+
+@media (max-width: 480px) {
+    .header nav {
+        flex-direction: column; /* Stack nav buttons */
+    }
+
+    .header nav .nav-button,
+    .search-container input {
+        width: 100%; /* Full width on mobile */
+        margin: 5px 0; /* Adjust margin for mobile */
+    }
+
+    .video-card {
+        padding: 15px; /* Adjusted padding for smaller screens */
+    }
+}
